@@ -1,0 +1,13 @@
+.card {
+  border-radius: 12px;
+  border-color: black;
+}
+
+.row {
+  padding: 10px;
+}
+
+img {
+  border-radius: 12px;
+  border-color: black;
+}
