@@ -1,5 +1,3 @@
-var startGame = require('./../js/memory.js').startGame
-
 var userClicks = 0;
 var previousClickId = -1;
 var currentClickId = -1;
