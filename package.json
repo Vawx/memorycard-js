@@ -1,0 +1,14 @@
+{
+  "name": "memory-card-game",
+  "version": "1.0.0",
+  "description": "Memory game with cards.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kyle Langley",
+  "license": "ISC",
+  "dependencies": {
+    "prompt": "^1.0.0"
+  }
+}
