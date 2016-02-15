@@ -1,1 +1,151 @@
-!function r(t,n,e){function i(o,c){if(!n[o]){if(!t[o]){var u="function"==typeof require&&require;if(!c&&u)return u(o,!0);if(a)return a(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var s=n[o]={exports:{}};t[o][0].call(s.exports,function(r){var n=t[o][1][r];return i(n?n:r)},s,s.exports,r,t,n,e)}return n[o].exports}for(var a="function"==typeof require&&require,o=0;o<e.length;o++)i(e[o]);return i}({1:[function(r,t,n){function e(r){s||$(".card-img").each(function(){if(parseInt(this.id)===r)for(var t=0;t<f.length;t++)if(f[t][1][0]===r)if($(this).attr("src","img/"+f[t][0][0]+".png"),o+=1,2===o)if($("#"+c).attr("src")===$("#"+r).attr("src")){for(var n=0;n<f.length;n++)if(f[n][0][1]===r){var e=f.indexOf(f[n]);f.splice(e,1)}o=0}else s=!0,u=r,a(i,800,1),o=0;else c=r})}function i(){$("#"+c).attr("src","img/background.png"),$("#"+u).attr("src","img/background.png"),c=-1,o=0,s=!1}function a(r,t,n){var e=function(t,n){return function(){if("undefined"==typeof n||n-- >0){setTimeout(e,t);try{r.call(null)}catch(i){throw n=0,i.toString()}}}}(t,n);setTimeout(e,t)}var o=0,c=-1,u=-1,f=[],s=!1,d=["apples","avacado","berry","bucket","melon","pear","pepper","watermelon"];n.cards=function(){return d},n.setBoard=function(r){f=[],f=r,o=0,c=-1,u=-1,s=!1},n.clickedBoard=function(r){e(r)}},{}],2:[function(r,t,n){var e=r("./../js/game.js").clickedBoard,i=(r("./../js/game.js").startGame,r("./../js/game.js").setBoard),a=r("./../js/game.js").cards;$(document).ready(function(){function r(){for(var r=[],t=a(),n=t.length,e=0;n>e;e++)t.push(t[e]);$(".card-img").each(function(){var n=t[Math.floor(Math.random()*t.length)];this.id=t.length.toString(),$(this).attr("src","img/background.png"),r.push([[n],[t.length]]);var e=t.indexOf(n);t.splice(e,1)}),i(r)}r(),$(".card-img").on("click",function(){e(parseInt(this.id))})})},{"./../js/game.js":1}]},{},[2]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var userClicks = 0;
+var previousClickId = -1;
+var currentClickId = -1;
+var board = [];
+var bPreventInput = false;
+var gameCards = ["apples",
+                 "avacado",
+                 "berry",
+                 "bucket",
+                 "melon",
+                 "pear",
+                 "pepper",
+                 "watermelon" ];
+
+exports.cards = function( ) {
+  return gameCards;
+};
+
+exports.setBoard = function( boardCards )
+{
+  board =[];
+  board = boardCards;
+  userClicks = 0;
+  previousClickId = -1;
+  currentClickId = -1;
+  bPreventInput = false;
+};
+
+exports.clickedBoard = function( id )
+{
+  setImageFromID(id);
+};
+
+function setImageFromID( id )
+{
+  if( !bPreventInput )
+  {
+    $(".card-img").each(function()
+    {
+      if( parseInt( this.id ) === id )
+      {
+        for( var i = 0; i < board.length; i++ )
+        {
+          if(board[i][1][0] === id)
+          {
+            $(this).attr("src", "img/" + board[i][0][0] + ".png");
+            userClicks += 1;
+            if(userClicks === 2)
+            {
+              if($( "#" + previousClickId ).attr("src") === $("#" +id ).attr("src") )
+              {
+                // matching, remove from board list
+                for(var j = 0; j < board.length; j++)
+                {
+                  if(board[j][0][1] === id)
+                  {
+                    var index = board.indexOf(board[j]);
+                    board.splice(index, 1);
+                  }
+                }
+                userClicks = 0;
+              }
+              else
+              {
+                bPreventInput = true;
+                currentClickId = id;
+                interval(delayBeforeHide, 800, 1);
+                userClicks = 0;
+              }
+            }
+            else
+            {
+                previousClickId = id;
+            }
+          }
+        }
+      }
+    });
+  }
+}
+
+  function delayBeforeHide( )
+  {
+    $("#" + previousClickId).attr("src", "img/background.png");
+    $("#" + currentClickId).attr("src", "img/background.png");
+    previousClickId = -1;
+    userClicks = 0;
+    bPreventInput = false;
+  }
+
+  /** Fix for setInterval( ) -- Thanks to: https://gist.github.com/richardkundl/7673746 */
+  function interval(func, wait, times){
+      var interv = function(w, t){
+          return function(){
+              if(typeof t === "undefined" || t-- > 0){
+                  setTimeout(interv, w);
+                  try{
+                      func.call(null);
+                  }
+                  catch(e){
+                      t = 0;
+                      throw e.toString();
+                  }
+              }
+          };
+      }(wait, times);
+
+      setTimeout(interv, wait);
+  };
+
+},{}],2:[function(require,module,exports){
+var clickedBoard  = require('./../js/game.js').clickedBoard;
+var startGame     = require('./../js/game.js').startGame;
+var setBoard      = require('./../js/game.js').setBoard;
+var cards         = require('./../js/game.js').cards;
+
+
+$(document).ready(function(){
+  setupBoard( );
+
+  $(".card-img").on("click",function() {
+    clickedBoard(parseInt(this.id));
+  });
+
+  function setupBoard( )
+  {
+    var storedBoard = [];
+    var usingCards = cards( );
+    var cardsLength = usingCards.length;
+    for( var i = 0; i < cardsLength; i++ )
+    {
+      usingCards.push(usingCards[ i ]);
+    }
+
+    $(".card-img").each(function( ) {
+      var card = usingCards[ Math.floor(Math.random( ) * usingCards.length) ];
+      this.id = usingCards.length.toString();
+      $(this).attr("src", "img/background.png");
+
+      storedBoard.push([[card],[usingCards.length]]);
+
+      var index = usingCards.indexOf(card);
+      usingCards.splice(index, 1);
+    });
+
+    setBoard( storedBoard );
+  }
+});
+
+},{"./../js/game.js":1}]},{},[2]);
