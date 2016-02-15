@@ -7,10 +7,6 @@ var cards         = require('./../js/game.js').cards;
 $(document).ready(function(){
   setupBoard( );
 
-  $(".restart").on("click",function( ) {
-    setupBoard( );
-  });
-
   $(".card-img").on("click",function() {
     clickedBoard(parseInt(this.id));
   });
@@ -18,21 +14,22 @@ $(document).ready(function(){
   function setupBoard( )
   {
     var storedBoard = [];
-    var gameCards = cards( );
-    var cardsLength = gameCards.length;
+    var usingCards = cards( );
+    var cardsLength = usingCards.length;
     for( var i = 0; i < cardsLength; i++ )
     {
-      gameCards.push(gameCards[ i ]);
+      usingCards.push(usingCards[ i ]);
     }
 
     $(".card-img").each(function( ) {
-      var card = gameCards[ Math.floor(Math.random( ) * gameCards.length) ];
-      this.id = gameCards.length.toString();
+      var card = usingCards[ Math.floor(Math.random( ) * usingCards.length) ];
+      this.id = usingCards.length.toString();
+      $(this).attr("src", "img/background.png");
 
-      storedBoard.push([[card],[gameCards.length]]);
+      storedBoard.push([[card],[usingCards.length]]);
 
-      var index = gameCards.indexOf(card);
-      gameCards.splice(index, 1);
+      var index = usingCards.indexOf(card);
+      usingCards.splice(index, 1);
     });
 
     setBoard( storedBoard );

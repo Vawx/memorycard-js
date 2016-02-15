@@ -20,7 +20,12 @@ exports.cards = function( ) {
 
 exports.setBoard = function( boardCards )
 {
+  board =[];
   board = boardCards;
+  userClicks = 0;
+  previousClickId = -1;
+  currentClickId = -1;
+  bPreventInput = false;
 };
 
 exports.clickedBoard = function( id )
